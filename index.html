@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISTE GRIET</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .hover-animate {
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .hover-animate:hover {
+            transform: scale(1.05);
+            color: #FF6347;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+    </style>
+</head>
+
+<body class="bg-black text-white overflow-x-hidden">
+    <header class="flex justify-between items-center p-4 bg-opacity-80 bg-black">
+        <div class="flex items-center">
+            <!-- Added logo -->
+            <img src="/iste1-removebg-preview.png" alt="ISTE GRIET Logo" class="h-12 mr-3">
+            <div class="text-2xl font-bold">ISTE GRIET</div>
+        </div>
+        <nav class="space-x-4">
+            <a href="#about" class="hover:text-gray-400">About</a>
+            <a href="#events" class="hover:text-gray-400">Events</a>
+            <a href="team.html" class="hover:text-gray-400">Team</a>
+            <a href="#contact" class="hover:text-gray-400">Contact</a>
+        </nav>
+    </header>
+
+    <main class="relative h-screen">
+        <canvas id="bgCanvas" class="absolute inset-0"></canvas>
+        <div class="relative z-10 flex flex-col items-center justify-center h-full text-center">
+            <h1 class="text-6xl font-extrabold mb-4 hover-animate">Welcome to ISTE GRIET</h1>
+            <p class="text-lg max-w-2xl">
+                Fostering a culture of innovation, collaboration, and growth among students through technology and
+                education.
+            </p>
+        </div>
+    </main>
+
+    <!-- About section with larger text -->
+    <section id="about" class="p-8">
+        <div class="glass-effect p-6">
+            <h2 class="text-5xl font-bold mb-6">About ISTE GRIET</h2>
+            <p class="text-xl font-medium mb-8">
+                The Indian Society for Technical Education (ISTE) is a national, non-profit professional organization
+                that
+                evolved from the Association of Principals of Technical Institutions (APTI) in 1968. Its primary goal is
+                to contribute to
+                the development of high-quality engineers and technicians needed by industry.
+                The ISTE chapter at GRIET was established in 2004 and has been actively organizing co-curricular
+                activities
+                that complement the changing educational curriculum. These events provide students with opportunities to
+                compete
+                with peers, apply their learning practically, and develop technical skills that help them achieve their
+                career goals.
+            </p>
+
+            <!-- Added Vision and Mission cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <div class="glass-effect p-6 bg-blue-900 bg-opacity-30 transform transition-all hover:scale-105">
+                    <h3 class="text-3xl font-bold mb-4 text-blue-300">Vision</h3>
+                    <p class="text-lg">
+                        "ISTE's Vision is that all educators are empowered to harness technology to accelerate
+                        innovation in teaching and learning, and inspire learners to reach their greatest potential.."
+                    </p>
+                </div>
+                <div class="glass-effect p-6 bg-purple-900 bg-opacity-30 transform transition-all hover:scale-105">
+                    <h3 class="text-3xl font-bold mb-4 text-purple-300">Mission</h3>
+                    <p class="text-lg">
+                        ISTE inspires educators worldwide to use technology to innovate teaching and learning,
+                        accelerate good practice and solve tough problems in education by providing community, knowledge
+                        and the ISTE Standards, a framework for rethinking education and empowering learners.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section id="events" class="p-8">
+        <div class="glass-effect p-6">
+            <h2 class="text-4xl font-bold mb-4">Upcoming Events</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-gray-800 p-4 rounded-lg">
+                    <h3 class="text-2xl font-bold">Tech Hackathon</h3>
+                    <p class="mt-2">Join us for an exciting 48-hour coding challenge!</p>
+                    <a href="events.html" class="text-blue-500 hover:underline">View Details</a>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                    <h3 class="text-2xl font-bold">Workshop on AI</h3>
+                    <p class="mt-2">Learn about Artificial Intelligence and its applications.</p>
+                    <a href="events.html" class="text-blue-500 hover:underline">View Details</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+ 
+   <!-- Testimonials Section -->
+    <section id="team" class="p-8 bg-black">
+        <div class="glass-effect p-6 overflow-hidden max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold mb-12 text-center text-white">Testimonials</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <!-- Director Card -->
+                <div
+                    class="testimonial-card bg-black bg-opacity-90 rounded-xl overflow-hidden shadow-2xl border border-gray-800 max-w-md mx-auto w-full">
+                    <!-- Image section -->
+                    <div class="p-4 image-container">
+                        <img src="/assets/testimonial/director.png" alt="Director" class="w-full h-72 object-contain mx-auto">
+                    </div>
+    
+                    <!-- Role badge -->
+                    <div class="px-6 py-3">
+                        <span class="inline-block bg-blue-200 text-blue-800 px-4 py-1 rounded-full text-sm font-semibold">
+                            DIRECTOR, GRIET
+                        </span>
+                    </div>
+    
+                    <!-- Quote content -->
+                    <div class="px-6 py-4 quote-container">
+                        <!-- Opening quote mark -->
+                        <span class="text-gray-600 text-6xl absolute top-0 left-4 leading-none">&ldquo;</span>
+    
+                        <p class="text-lg mt-6 ml-8 mb-8 italic text-gray-200">
+                            ISTE student body of GRIET, unwinds students interest and potential in various technical and
+                            extra-curricular fields by providing apt opportunities.
+                        </p>
+    
+                        <!-- Closing quote mark -->
+                        <span class="text-gray-600 text-6xl absolute bottom-0 right-4 leading-none">&rdquo;</span>
+    
+                        <!-- Author -->
+                        <p class="text-right text-gray-400 italic mt-2 mr-8">― Dr. Jandhyala N Murthy</p>
+                    </div>
+                </div>
+    
+                <!-- Principal Card -->
+                <div
+                    class="testimonial-card bg-black bg-opacity-90 rounded-xl overflow-hidden shadow-2xl border border-gray-800 max-w-md mx-auto w-full">
+                    <!-- Image section -->
+                    <div class="p-4 image-container">
+                        <img src="/assets/testimonial/principal.png" alt="Principal" class="w-full h-72 object-contain mx-auto">
+                    </div>
+    
+                    <!-- Role badge -->
+                    <div class="px-6 py-3">
+                        <span class="inline-block bg-blue-200 text-blue-800 px-4 py-1 rounded-full text-sm font-semibold">
+                            PRINCIPAL, GRIET
+                        </span>
+                    </div>
+    
+                    <!-- Quote content -->
+                    <div class="px-6 py-4 quote-container">
+                        <!-- Opening quote mark -->
+                        <span class="text-gray-600 text-6xl absolute top-0 left-4 leading-none">&ldquo;</span>
+    
+                        <p class="text-lg mt-6 ml-8 mb-8 italic text-gray-200">
+                            ISTE student chapter is a vibrant student body in GRIET enhancing student learning through
+                            multiple technical and non technical events.
+                        </p>
+    
+                        <!-- Closing quote mark -->
+                        <span class="text-gray-600 text-6xl absolute bottom-0 right-4 leading-none">&rdquo;</span>
+    
+                        <!-- Author -->
+                        <p class="text-right text-gray-400 italic mt-2 mr-8">― Dr. J Praveen</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="p-4 bg-black text-center">
+        © 2025 ISTE GRIET. All Rights Reserved.
+    </footer>
+
+    <script>
+        const canvas = document.getElementById('bgCanvas');
+        const renderer = new THREE.WebGLRenderer({ canvas });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        const starGeometry = new THREE.BufferGeometry();
+        const starMaterial = new THREE.PointsMaterial({ color: 0xffffff });
+
+        const starVertices = [];
+        for (let i = 0; i < 10000; i++) {
+            const x = (Math.random() - 0.5) * 2000;
+            const y = (Math.random() - 0.5) * 2000;
+            const z = (Math.random() - 0.5) * 2000;
+            starVertices.push(x, y, z);
+        }
+
+        starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+
+        const stars = new THREE.Points(starGeometry, starMaterial);
+        scene.add(stars);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            stars.rotation.x += 0.0005;
+            stars.rotation.y += 0.0005;
+            renderer.render(scene, camera);
+        }
+
+        animate();
+        
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISTE GRIET - Team</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .team-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .member-card {
+            background: rgba(10, 10, 15, 0.7);
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+            cursor: pointer;
+            position: relative;
+            border: 1px solid rgba(50, 50, 100, 0.2);
+        }
+
+        .member-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(20, 40, 100, 0.2);
+        }
+
+        .member-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .member-info {
+            padding: 15px;
+        }
+
+        .member-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .member-position {
+            color: #4080bf;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .category-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 30px 0;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            background: rgba(10, 15, 30, 0.7);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(40, 50, 100, 0.3);
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: rgba(30, 40, 80, 0.7);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: rgba(5, 5, 10, 0.95);
+            border-radius: 15px;
+            max-width: 800px;
+            margin: 50px auto;
+            position: relative;
+            padding: 30px;
+            border: 1px solid rgba(40, 50, 100, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(40, 50, 80, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .close-modal:hover {
+            background: rgba(50, 60, 100, 0.4);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 20px;
+            border: 3px solid rgba(40, 50, 100, 0.5);
+        }
+
+        .modal-title-area {
+            flex: 1;
+        }
+
+        .modal-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .modal-position {
+            color: #4080bf;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .social-icon {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(30, 40, 80, 0.3);
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .social-icon:hover {
+            background: rgba(40, 60, 120, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .modal-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: #4080bf;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(40, 50, 100, 0.3);
+            padding-bottom: 5px;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-tag {
+            background: rgba(20, 30, 60, 0.3);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .team-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .member-img {
+                height: 150px;
+            }
+
+            .modal-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .modal-img {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+            .modal-content {
+                padding: 20px;
+                margin: 20px auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="bgCanvas"></canvas>
+
+    <main class="team-container">
+        <h1 class="text-4xl font-bold text-center mt-10 mb-2">ISTE GRIET Team</h1>
+        <p class="text-center text-blue-300 mb-8">Meet our passionate and talented team members</p>
+
+        <div class="category-filter">
+            <div class="filter-btn active" data-filter="all">All</div>
+            <div class="filter-btn" data-filter="Core">Core</div>
+            <div class="filter-btn" data-filter="Technical">Technical</div>
+            <div class="filter-btn" data-filter="Web">Web</div>
+            <div class="filter-btn" data-filter="Design">Design</div>
+            <div class="filter-btn" data-filter="Publicity">Publicity</div>
+            <div class="filter-btn" data-filter="Events">Events</div>
+            <div class="filter-btn" data-filter="Content">Content</div>
+            <div class="filter-btn" data-filter="PR">PR</div>
+        </div>
+
+        <div class="team-grid" id="teamGrid">
+            <!-- Team members will be dynamically added here -->
+        </div>
+    </main>
+
+    <div class="modal" id="memberModal">
+        <div class="modal-content">
+            <div class="close-modal" id="closeModal">×</div>
+            <div class="modal-header">
+                <img src="" alt="" class="modal-img" id="modalImg">
+                <div class="modal-title-area">
+                    <h2 class="modal-name" id="modalName"></h2>
+                    <div class="modal-position" id="modalPosition"></div>
+                    <div class="social-links">
+                        <a href="#" target="_blank" class="social-icon" id="modalLinkedin">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z" />
+                            </svg>
+                        </a>
+                        <a href="#" target="_blank" class="social-icon" id="modalGithub">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-section">
+                <h3 class="section-title">About</h3>
+                <p id="modalAbout"></p> 
+            </div>
+
+            <div class="modal-section">
+                <h3 class="section-title">Contributions</h3>
+                <p id="modalContributions"></p>
+            </div> 
+
+            <div class="modal-section">
+                <h3 class="section-title">Skills</h3>
+                <div class="skills-list" id="modalSkills"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample team data - replace with your actual team data
+        const teamMembers = [
+            {
+                name: "Alex Johnson",
+                position: "Core Team Lead",
+                category: "Core",
+                image: "https://via.placeholder.com/300?text=AJ",
+                about: "Alex has been with ISTE for 3 years and currently leads the core team, overseeing all club operations and strategic initiatives.",
+                contributions: "Led the annual tech symposium, established partnerships with 5 major tech companies, and initiated the mentor-mentee program.",
+                skills: ["Leadership", "Project Management", "Public Speaking", "Strategic Planning"],
+                linkedin: "https://linkedin.com",
+                github: "https://github.com"
+            },
+            {
+                name: "Samantha Lee",
+                position: "Technical Head",
+                category: "Technical",
+                image: "https://via.placeholder.com/300?text=SL",
+                about: "Samantha is a senior computer science student with expertise in AI and machine learning.",
+                contributions: "Organized 3 successful hackathons, led technical workshops on AI and machine learning, and developed the club's project management system.",
+                skills: ["Python", "TensorFlow", "Machine Learning", "C++", "Project Management"],
+                linkedin: "https://linkedin.com",
+                github: "https://github.com"
+            },
+            // Add this after the last team member in the array
+            {
+                name: "Jane Smith",
+                position: "Technical Team Member",
+                category: "Technical", // This should match one of your filter categories
+                image: "https://via.placeholder.com/300?text=JS", // Use a placeholder or actual image URL
+                about: "Jane is a junior engineer specializing in IoT development.",
+                contributions: "Developed smart campus solutions, contributed to the automated attendance system.",
+                skills: ["Arduino", "IoT", "Python", "Hardware Design"],
+                linkedin: "https://linkedin.com",
+                github: "https://github.com"
+            },
+            {
+                name: "Raj Patel",
+                position: "Web Development Lead",
+                category: "Web",
+                image: "https://via.placeholder.com/300?text=RP",
+                about: "Raj is passionate about creating intuitive and accessible web experiences.",
+                contributions: "Redesigned the ISTE website, created the event management portal, and conducted web development workshops for beginners.",
+                skills: ["JavaScript", "React", "Node.js", "UI/UX", "Responsive Design"],
+                linkedin: "https://linkedin.com",
+                github: "https://github.com"
+            },
+            {
+                name: "Maya Williams",
+                position: "Design Head",
+                category: "Design",
+                image: "https://via.placeholder.com/300?text=MW",
+                about: "Maya brings creative vision and artistic expertise to all ISTE visual communications.",
+                contributions: "Created the new ISTE brand identity, designed materials for all major events, and established the design system for club communications.",
+                skills: ["Graphic Design", "UI Design", "Adobe Creative Suite", "Typography", "Branding"],
+                linkedin: "https://linkedin.com",
+                github: "https://github.com"
+            },
+            {
+                name: "Carlos Rodriguez",
+                position: "Publicity Coordinator",
+                category: "Publicity",
+                image: "https://via.placeholder.com/300?text=CR",
+                about: "Carlos excels at creating engaging content strategies that increase club visibility.",
+                contributions: "Increased social media following by 200%, coordinated campus-wide promotion campaigns, and established relationships with campus media outlets.",
+                skills: ["Social Media Marketing", "Content Strategy", "Analytics", "Copywriting"],
+                linkedin: "https://linkedin.com",
+                github: "https://github.com"
+            },
+            {
+                name: "Aisha Patel",
+                position: "Events Manager",
+                category: "Events",
+                image: "https://via.placeholder.com/300?text=AP",
+                about: "Aisha has exceptional organizational skills and a talent for creating memorable events.",
+                contributions: "Organized the annual ISTE conference, coordinated 12 technical workshops, and managed logistics for all club events.",
+                skills: ["Event Planning", "Logistics", "Budgeting", "Team Coordination", "Time Management"],
+                linkedin: "https://linkedin.com",
+                github: "https://github.com"
+            },
+            {
+                name: "David Kim",
+                position: "Content Creator",
+                category: "Content",
+                image: "https://via.placeholder.com/300?text=DK",
+                about: "David has a knack for translating complex technical concepts into accessible content.",
+                contributions: "Created the ISTE blog, produced technical tutorials, and developed the content strategy for all educational materials.",
+                skills: ["Technical Writing", "Content Creation", "SEO", "Video Production", "Editing"],
+                linkedin: "https://linkedin.com",
+                github: "https://github.com"
+            },
+            {
+                name: "Priya Sharma",
+                position: "PR Coordinator",
+                category: "PR",
+                image: "https://via.placeholder.com/300?text=PS",
+                about: "Priya excels at building relationships with industry partners and other student organizations.",
+                contributions: "Established partnerships with 3 tech companies, coordinated guest speaker series, and represented ISTE at inter-college events.",
+                skills: ["Communication", "Networking", "Relationship Building", "Public Relations"],
+                linkedin: "https://linkedin.com",
+                github: "https://github.com"
+            }
+        ];
+
+        // Populate team members (showing just 8 here, you can add more to reach 30)
+        // In a real implementation, you would add all your team members to the array above
+
+        const teamGrid = document.getElementById('teamGrid');
+        const memberModal = document.getElementById('memberModal');
+        const closeModal = document.getElementById('closeModal');
+
+        // Functions to handle modal interactions
+        function openModal(member) {
+            document.getElementById('modalImg').src = member.image;
+            document.getElementById('modalName').textContent = member.name;
+            document.getElementById('modalPosition').textContent = member.position;
+            document.getElementById('modalAbout').textContent = member.about;
+            document.getElementById('modalContributions').textContent = member.contributions;
+
+            const skillsContainer = document.getElementById('modalSkills');
+            skillsContainer.innerHTML = '';
+            member.skills.forEach(skill => {
+                const skillTag = document.createElement('div');
+                skillTag.className = 'skill-tag';
+                skillTag.textContent = skill;
+                skillsContainer.appendChild(skillTag);
+            });
+
+            document.getElementById('modalLinkedin').href = member.linkedin;
+            document.getElementById('modalGithub').href = member.github;
+
+            memberModal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+        }
+
+        function closeModalHandler() {
+            memberModal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Re-enable scrolling
+        }
+
+        closeModal.addEventListener('click', closeModalHandler);
+
+        // Close modal when clicking outside the content
+        memberModal.addEventListener('click', function (event) {
+            if (event.target === memberModal) {
+                closeModalHandler();
+            }
+        });
+
+        // Category filtering functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const filter = this.getAttribute('data-filter');
+
+                // Update active button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+
+                // Filter members
+                const memberCards = document.querySelectorAll('.member-card');
+                memberCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Render team members
+        function renderTeamMembers() {
+            teamGrid.innerHTML = '';
+
+            teamMembers.forEach(member => {
+                const memberCard = document.createElement('div');
+                memberCard.className = 'member-card';
+                memberCard.setAttribute('data-category', member.category);
+
+                memberCard.innerHTML = `
+                    <img src="${member.image}" alt="${member.name}" class="member-img">
+                    <div class="member-info">
+                        <div class="member-name">${member.name}</div>
+                        <div class="member-position">${member.position}</div>
+                    </div>
+                `;
+
+                memberCard.addEventListener('click', () => openModal(member));
+                teamGrid.appendChild(memberCard);
+            });
+        }
+
+        renderTeamMembers();
+
+        // Initialize Three.js background
+        const canvas = document.getElementById('bgCanvas');
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 30;
+
+        // Create smaller, more subtle particles
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 500; // Reduced number of particles
+
+        const posArray = new Float32Array(particlesCount * 3);
+        const velocityArray = new Float32Array(particlesCount * 3);
+
+        for (let i = 0; i < particlesCount * 3; i += 3) {
+            // Position
+            posArray[i] = (Math.random() - 0.5) * 150;
+            posArray[i + 1] = (Math.random() - 0.5) * 150;
+            posArray[i + 2] = (Math.random() - 0.5) * 150;
+
+            // Velocity - much slower
+            velocityArray[i] = (Math.random() - 0.5) * 0.02;
+            velocityArray[i + 1] = (Math.random() - 0.5) * 0.02;
+            velocityArray[i + 2] = (Math.random() - 0.5) * 0.02;
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+        // Much smaller and more subtle particles
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.3, // Smaller size
+            sizeAttenuation: true,
+            color: 0x102040, // Much darker blue, almost black
+            transparent: true,
+            opacity: 0.4 // Much more transparent
+        });
+
+        // Create the particle system
+        const particleMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particleMesh);
+
+        // Lines connecting nearby particles (much more subtle)
+        const lineMaterial = new THREE.LineBasicMaterial({
+            color: 0x0a1020, // Very dark blue, almost black
+            transparent: true,
+            opacity: 0.1 // Very transparent
+        });
+
+        const lines = [];
+        const maxConnections = 50; // Fewer connections
+        const connectionDistance = 20; // Slightly increased distance for fewer but longer connections
+
+        function updateConnections() {
+            // Remove existing lines
+            lines.forEach(line => scene.remove(line));
+            lines.length = 0;
+
+            // Create new connections based on current positions, but only occasionally
+            if (Math.random() < 0.3) { // Only update connections 30% of the time for performance
+                const positions = particlesGeometry.attributes.position.array;
+                let connectionCount = 0;
+
+                for (let i = 0; i < particlesCount; i += 5) { // Skip particles for performance
+                    const iX = positions[i * 3];
+                    const iY = positions[i * 3 + 1];
+                    const iZ = positions[i * 3 + 2];
+
+                    for (let j = i + 1; j < particlesCount; j += 5) { // Skip particles for performance
+                        if (connectionCount >= maxConnections) break;
+
+                        const jX = positions[j * 3];
+                        const jY = positions[j * 3 + 1];
+                        const jZ = positions[j * 3 + 2];
+
+                        const dx = iX - jX;
+                        const dy = iY - jY;
+                        const dz = iZ - jZ;
+
+                        const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+                        if (distance < connectionDistance) {
+                            const lineGeometry = new THREE.BufferGeometry().setFromPoints([
+                                new THREE.Vector3(iX, iY, iZ),
+                                new THREE.Vector3(jX, jY, jZ)
+                            ]);
+
+                            const line = new THREE.Line(lineGeometry, lineMaterial);
+                            scene.add(line);
+                            lines.push(line);
+                            connectionCount++;
+                        }
+                    }
+
+                    if (connectionCount >= maxConnections) break;
+                }
+            }
+        }
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Update particle positions (slower movement)
+            const positions = particlesGeometry.attributes.position.array;
+
+            for (let i = 0; i < particlesCount * 3; i += 3) {
+                // Move particles according to their velocity
+                positions[i] += velocityArray[i];
+                positions[i + 1] += velocityArray[i + 1];
+                positions[i + 2] += velocityArray[i + 2];
+
+                // Boundary check and bounce
+                if (Math.abs(positions[i]) > 75) velocityArray[i] *= -1;
+                if (Math.abs(positions[i + 1]) > 75) velocityArray[i + 1] *= -1;
+                if (Math.abs(positions[i + 2]) > 75) velocityArray[i + 2] *= -1;
+            }
+
+            particlesGeometry.attributes.position.needsUpdate = true;
+
+            // Very slow rotation
+            particleMesh.rotation.x += 0.0001;
+            particleMesh.rotation.y += 0.0001;
+
+            // Update connections occasionally
+            if (Math.random() < 0.01) { // Only 1% chance per frame
+                updateConnections();
+            }
+
+            // Very subtle camera movement
+            camera.position.x += (mouse.x * 2 - camera.position.x) * 0.01;
+            camera.position.y += (mouse.y * 2 - camera.position.y) * 0.01;
+            camera.lookAt(scene.position);
+
+            renderer.render(scene, camera);
+        }
+
+        // Track mouse position for subtle interactive background
+        const mouse = { x: 0, y: 0 };
+
+        document.addEventListener('mousemove', (event) => {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Initialize animation
+        animate();
+    </script>
+</body>
+
+</html>
