@@ -107,6 +107,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            cursor: pointer; /* Added for clickable image */
         }
 
         .event-content {
@@ -215,6 +216,42 @@
                 right: 0;
             }
         }
+
+        /* Added CSS for Image Modal */
+        #imageModal {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        #imageModal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #modalImage {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+            border: 2px solid white;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        #closeModal {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: white;
+        }
+
+        @media (max-width: 640px) {
+            #closeModal {
+                font-size: 3rem;
+                top: 1rem;
+                right: 1rem;
+            }
+        }
     </style>
 </head>
 
@@ -223,7 +260,7 @@
 
     <header class="flex justify-between items-center p-4 bg-opacity-80 bg-black sticky top-0 z-10">
         <div class="flex items-center space-x-2">
-            <img src="/iste1-removebg-preview.png" alt="ISTE Logo" class="logo">
+            <img src="iste1-removebg-preview.png" alt="ISTE Logo" class="logo">
             <div class="text-2xl font-bold">ISTE GRIET</div>
         </div>
         <nav class="desktop-nav space-x-4">
@@ -265,49 +302,79 @@
 
             <div class="timeline-item glass-effect">
                 <div class="event-thumbnail">
-                    <img src="/api/placeholder/90/90" alt="AI Workshop">
+                    <img src="images/seminar.jpg" alt="btech">
                 </div>
                 <div class="event-content">
-                    <h3 class="text-xl md:text-2xl font-bold mb-2">AI Workshop</h3>
-                    <p class="text-base md:text-lg">Join us for an engaging workshop on AI and Machine Learning!</p>
-                    <span class="text-sm text-gray-400">March 15, 2025</span>
+                    <h3 class="text-xl md:text-2xl font-bold mb-2">WHAT AFTER B.TECH?</h3>
+                    <p class="text-base md:text-lg">A seminar on career guidance after completing B.Tech, focusing on excelling in interviews and navigating careers.</p>
+                    <span class="text-sm text-gray-400">1 NOV 2023</span>
                 </div>
             </div>
 
             <div class="timeline-item glass-effect">
                 <div class="event-thumbnail">
-                    <img src="/api/placeholder/90/90" alt="Hackathon">
+                    <img src="images/MLworkshop.jpeg" alt="MLworkshop">
                 </div>
                 <div class="event-content">
-                    <h3 class="text-xl md:text-2xl font-bold mb-2">24-Hour Hackathon</h3>
-                    <p class="text-base md:text-lg">Participate in our coding challenge with exciting prizes!</p>
-                    <span class="text-sm text-gray-400">April 10, 2025</span>
+                    <h3 class="text-xl md:text-2xl font-bold mb-2">Machine Learning Workshop</h3>
+                    <p class="text-base md:text-lg">A Workshop has been conducted on understanding the concepts of Machine Learning.</p>
+                    <span class="text-sm text-gray-400">22 NOV 2021</span>
                 </div>
             </div>
 
             <div class="timeline-item glass-effect">
                 <div class="event-thumbnail">
-                    <img src="/api/placeholder/90/90" alt="Tech Seminar">
+                    <img src="images/guestlectureonbe.jpeg" alt="guestlectureonbe">
                 </div>
                 <div class="event-content">
-                    <h3 class="text-xl md:text-2xl font-bold mb-2">Tech Seminar</h3>
-                    <p class="text-base md:text-lg">Attend a seminar on emerging technologies by industry experts.</p>
-                    <span class="text-sm text-gray-400">May 5, 2025</span>
+                    <h3 class="text-xl md:text-2xl font-bold mb-2">Career in Biomedical Engineering and ISTE Gathering</h3>
+                    <p class="text-base md:text-lg">An informative talk which gives a good understanding about BioMedical Engineering and how it is related to engineering Branches followed by ISTE Gathering.</p>
+                    <span class="text-sm text-gray-400">26 OCT 2021</span>
                 </div>
             </div>
 
             <div class="timeline-item glass-effect">
                 <div class="event-thumbnail">
-                    <img src="/api/placeholder/90/90" alt="Tech Workshop">
+                    <img src="images/scribbleriddle.jpeg" alt="scribbleriddle">
                 </div>
                 <div class="event-content">
-                    <h3 class="text-xl md:text-2xl font-bold mb-2">Web Development Workshop</h3>
-                    <p class="text-base md:text-lg">Learn the latest web development technologies and frameworks.</p>
-                    <span class="text-sm text-gray-400">June 12, 2025</span>
+                    <h3 class="text-xl md:text-2xl font-bold mb-2">Scribble Riddle</h3>
+                    <p class="text-base md:text-lg">An event to test students understandings on their academic subjects.</p>
+                    <span class="text-sm text-gray-400">26 JUNE 2021</span>
+                </div>
+            </div>
+
+            <div class="timeline-item glass-effect">
+                <div class="event-thumbnail">
+                    <img src="images/vivek.PNG" alt="Youth trends">
+                </div>
+                <div class="event-content">
+                    <h3 class="text-xl md:text-2xl font-bold mb-2">Opportunities for Youth in current trends</h3>
+                    <p class="text-base md:text-lg">An informative talk on understanding the resources an individual has and making the best use of them.</p>
+                    <span class="text-sm text-gray-400">12 Jan 2021</span>
+                </div>
+            </div>
+
+            <div class="timeline-item glass-effect">
+                <div class="event-thumbnail">
+                    <img src="images/memories.PNG" alt="memories">
+                </div>
+                <div class="event-content">
+                    <h3 class="text-xl md:text-2xl font-bold mb-2">Frozen memories</h3>
+                    <p class="text-base md:text-lg">Photos are an outlet to the world, an inlet to our memories. An event on sharing best photos and the story behind them.</p>
+                    <span class="text-sm text-gray-400">26 NOV 2020</span>
                 </div>
             </div>
         </div>
     </main>
+
+    <!-- Added Modal HTML -->
+    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+        <div class="relative">
+            <img id="modalImage" src="" alt="Enlarged event image">
+            <button id="closeModal" class="absolute top-2 right-2">×</button>
+        </div>
+    </div>
 
     <script>
         // Set up canvas
@@ -620,6 +687,43 @@
 
         checkMobile();
         window.addEventListener('resize', checkMobile);
+    </script>
+
+    <!-- Added JavaScript for Image Modal -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const thumbnails = document.querySelectorAll('.event-thumbnail img');
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const closeModal = document.getElementById('closeModal');
+
+            thumbnails.forEach(function(thumbnail) {
+                thumbnail.addEventListener('click', function() {
+                    modalImage.src = this.src;
+                    modal.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+
+            function closeModalFunc() {
+                modal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+
+            closeModal.addEventListener('click', closeModalFunc);
+
+            modal.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    closeModalFunc();
+                }
+            });
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && modal.classList.contains('show')) {
+                    closeModalFunc();
+                }
+            });
+        });
     </script>
 </body>
 
